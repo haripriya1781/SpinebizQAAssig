@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
-import org.pojo.classes.LoginPOJO;
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -21,30 +20,26 @@ public class ValidCredential extends Baseclass {
 
 	@Test
 	private void validLogin(String usrTxt, String passTxt, String emailTxt, String passwTxt ) {
-		LoginPOJO l;
+
 		// 1. Navigate to application:
 
 		browserLaunch("chrome");
 		launchUrl("http://testfire.net/");
 
 		// 2 Login with invalid credential:
-		 l = new LoginPOJO();
-		driver.findElement(By.id("LoginLink")).click();
-		passText(l.getEmailtxt(), emailTxt);
-		passText(l.getPasstxt(), passwTxt);
-		click(l.getSignin());
 		
+		driver.findElement(By.id("LoginLink")).click();
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys(emailTxt);
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys(passwTxt);
+		driver.findElement(By.xpath("(//input[@type='submit'])[2]")).click();
 
 
 		// 3. Login with valid credential:
-		 l = new LoginPOJO();
-			driver.findElement(By.id("LoginLink")).click();
-			passText(l.getEmailtxt(), usrTxt);
-			passText(l.getPasstxt(), passTxt);
-			click(l.getSignin());
+		driver.findElement(By.xpath("(//input[@type='text'])[2]")).sendKeys(usrTxt);
+		driver.findElement(By.xpath("//input[@type='password']")).sendKeys(passTxt);
+		driver.findElement(By.xpath("(//input[@type='submit'])[2]")).click();
 		
-		
-		// 4. validate sigininng in with valid credential
+		// 3. validate sigininng in with valid credential
 		WebElement Welcome = driver.findElement(By.xpath("//h1[ contains(text(),'Hello Admin User')]"));
 		Assert.assertTrue(Welcome.isDisplayed(), "Login is not succesful");
 
